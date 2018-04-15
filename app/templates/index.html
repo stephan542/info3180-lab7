@@ -10,15 +10,6 @@
                   <strong>Error:</strong> {{ error }}
                 </div>
               {% endif %}
-            <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" >
-                <h4>{{uploadform.description.label}}</h4>
-                {{uploadform.description}}
-                <h4>{{uploadform.photo.label}}</h4>
-                {{uploadform.photo}}
-                <br><br>
-                <button class="submit_btn">Submit</button>
-                <br><br>
-            </form>
             <router-view></router-view>
         </div>
     </main>
