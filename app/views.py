@@ -4,19 +4,38 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-
+import os
 from app import app
 from flask import render_template, request
+from werkzeug.utils import secure_filename
+from forms import UploadForm
+import json
 
 ###
 # Routing for your application.
 ###
+@app.route('/upload', methods=['POST'])
+def upload():
+    uploadform = UploadForm()
 
+    # Validate file upload on submit
+    if request.method == 'POST' and uploadform.validate():
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('./app/static/uploads',filename))
+            jsondata = {"message": "File Upload Successful","filename": filename,"description": request.form['description']}
+            return render_template('index.html',data=jsondata)
+    else:
+        jsondata = {"error": form_errors(uploadform)}
+        return render_template('index.html',data=jsondata)
+    
+    
 
 @app.route('/')
 def index():
     """Render website's initial page and let VueJS take over."""
-    return render_template('index.html')
+    form = UploadForm()
+    return render_template('index.html',form=form)
 
 
 # Here we define a function to collect form errors from Flask-WTF

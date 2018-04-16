@@ -6,7 +6,15 @@
 
     <main>
         <div class="container">
-            <!-- component matched by the route will render here -->
+            <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" >
+                <h4>{{form.description.label}}</h4>
+                {{form.description}}
+                <h4>{{form.photo.label}}</h4>
+                {{form.photo}}
+                <br><br>
+                <button class="submit_btn">Submit</button>
+                <br><br>
+            </form>
             <router-view></router-view>
         </div>
     </main>
