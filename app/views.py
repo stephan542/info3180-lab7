@@ -16,26 +16,32 @@ import json
 ###
 @app.route('/upload', methods=['POST'])
 def upload():
+   
     uploadform = UploadForm()
-
+    
     # Validate file upload on submit
-    if request.method == 'POST' and uploadform.validate():
-            file = request.files['file']
+    if request.method == 'POST':
+        if uploadform.validate_on_submit():
+            file = request.files['photo']
             filename = secure_filename(file.filename)
-            file.save(os.path.join('./app/static/uploads',filename))
+          
+            file.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], filename
+            ))
+            
             jsondata = {"message": "File Upload Successful","filename": filename,"description": request.form['description']}
-            return render_template('index.html',data=jsondata)
+            return render_template('index.html',uploadform=uploadform,data=jsondata)
     else:
         jsondata = {"error": form_errors(uploadform)}
-        return render_template('index.html',data=jsondata)
+        return render_template('index.html',uploadform=uploadform,data=jsondata)
     
     
 
 @app.route('/')
 def index():
     """Render website's initial page and let VueJS take over."""
-    form = UploadForm()
-    return render_template('index.html',form=form)
+    uploadform = UploadForm()
+    return render_template('index.html',uploadform=uploadform)
 
 
 # Here we define a function to collect form errors from Flask-WTF

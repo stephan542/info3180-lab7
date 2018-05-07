@@ -3,14 +3,18 @@
 {% block main %}
 <div id="app">
     <app-header></app-header>
-
     <main>
         <div class="container">
+            {% if error %}
+                <div class="alert alert-danger">
+                  <strong>Error:</strong> {{ error }}
+                </div>
+              {% endif %}
             <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" >
-                <h4>{{form.description.label}}</h4>
-                {{form.description}}
-                <h4>{{form.photo.label}}</h4>
-                {{form.photo}}
+                <h4>{{uploadform.description.label}}</h4>
+                {{uploadform.description}}
+                <h4>{{uploadform.photo.label}}</h4>
+                {{uploadform.photo}}
                 <br><br>
                 <button class="submit_btn">Submit</button>
                 <br><br>
